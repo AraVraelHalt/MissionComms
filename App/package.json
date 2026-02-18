@@ -1,8 +1,8 @@
 {
-  "name": "electron",
+  "name": "App",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "electron/main.js",
   "scripts": {
     "start": "electron ."
   },
@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "dependencies": {
+    "tor-control": "^0.0.3"
+  },
   "devDependencies": {
     "electron": "^40.4.1"
   }
 }
+
