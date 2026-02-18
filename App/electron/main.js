@@ -7,7 +7,7 @@ function createWindow() {
     backgroundColor: '#121212'
   });
 
-  win.loadFile('login.html');
+  win.loadFile('index.html');
 }
 
 app.whenReady().then(createWindow);
