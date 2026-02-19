@@ -1,12 +1,12 @@
 const { app, BrowserWindow } = require('electron');
-const startTor = require("./launch_tor");
-const startServer = require("./launch_server");
+const { spawn, exec } = require('child_process');
+const path = require('path');
 
 // ----------------------
-// Background Proccesses
+// Background Processes
 // ----------------------
-const torProcess = startTor();
-const serverProcess = startServer();
+let torPID;
+let pyProcess;
 
 // ----------------------
 // Electron Window
@@ -19,14 +19,34 @@ function createWindow() {
   });
 
   win.loadFile('electron/index.html');
+  
+  return win;
 }
 
-app.whenReady().then(createWindow);
+// ----------------------
+// Tor Startup
+// ----------------------
+function startTor(win) {
+  if (!win) return console.error('Window is undefined!');
+  
+  const daemonPath = path.join(__dirname, '..','python', 'tor', 'tor_daemon.py');
+  pyProcess = spawn('python3', [daemonPath]);
+  
+  pyProcess.stdout.on('data', (data) => {
+    const output = data.toString().trim();
+    if (!torPID) torPID = parseInt(output, 10);
+    win.webContents.send('python-output', output);
+  });
 
-// ----------------------
-// Kill
-// ----------------------
-app.on("will-quit", () => {
-  torProcess.kill();
-  serverProcess.kill();
+  pyProcess.stderr.on('data', (data) => console.error(data.toString()));
+}
+
+app.on('before-quit', () => {
+  if (torPID) process.kill(torPID);
+  if (pyProcess) pyProcess.kill();
+});
+
+app.whenReady().then(() => {
+  const win = createWindow();
+  startTor(win);
 });
