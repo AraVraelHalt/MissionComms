@@ -15,7 +15,12 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: '#121212'
+    backgroundColor: '#121212',
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
   });
 
   win.loadFile('electron/index.html');
@@ -33,13 +38,31 @@ function startTor(win) {
   pyProcess = spawn('python3', [daemonPath]);
   
   pyProcess.stdout.on('data', (data) => {
-    const output = data.toString().trim();
-    if (!torPID) torPID = parseInt(output, 10);
-    win.webContents.send('python-output', output);
+    const lines = data.toString().split('\n');
+
+    for (let line of lines) {
+      line = line.trim();
+      if (!line) continue;
+
+      if (line.startsWith("__TOR_PID__:")) {
+        torPID = parseInt(line.split(":")[1], 10);
+        continue;
+      }
+
+      if (line.includes("Bootstrapped 100%")) {
+        win.webContents.send('tor-done');
+      }
+
+      win.webContents.send('python-output', line);
+    }
   });
 
-  pyProcess.stderr.on('data', (data) => console.error(data.toString()));
+  pyProcess.stderr.on('data', (data) => console.error(data.toString()));  
 }
+
+
+
+
 
 app.on('before-quit', () => {
   if (torPID) process.kill(torPID);
