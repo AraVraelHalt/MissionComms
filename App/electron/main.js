@@ -24,7 +24,7 @@ function createWindow() {
     }
   });
 
-  win.loadFile('electron/hopping.html');
+  win.loadFile('electron/hopper/hopping.html');
   
   return win;
 }
@@ -66,6 +66,7 @@ function startTor(win) {
     });
   });
 }
+
 // ----------------------
 // Server Startup
 // ----------------------
@@ -86,6 +87,9 @@ function startServer(win) {
   win.webContents.send('server-started');
 }
 
+// ----------------------
+// Application
+// ----------------------
 app.on('before-quit', () => {
   if (torPID) process.kill(torPID);
   if (pyProcess) pyProcess.kill();
@@ -96,5 +100,5 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
-  win.loadFile('electron/comms.html');
+  win.loadFile('electron/comms/comms.html');
 });

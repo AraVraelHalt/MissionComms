@@ -16,7 +16,7 @@ function startHopping() {
       .join('.');
     const statusEl = document.getElementById('status');
     statusEl.innerText += `Hopping to ${randomIP}\n`;
-  }, 200);
+  }, 400);
 }
 
 startHopping();
