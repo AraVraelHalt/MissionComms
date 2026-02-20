@@ -24,7 +24,7 @@ function createWindow() {
     }
   });
 
-  win.loadFile('electron/index.html');
+  win.loadFile('electron/hopping.html');
   
   return win;
 }
@@ -96,4 +96,5 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
+  win.loadFile('electron/comms.html');
 });
