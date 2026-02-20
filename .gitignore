@@ -27,6 +27,9 @@ venv/
 #onion service
 hidden_service/
 
+#testing
+test/
+
 # npm package
 /npm/dist
 /npm/path.txt
