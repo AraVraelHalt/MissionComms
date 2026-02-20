@@ -6,7 +6,6 @@ window.electronAPI.onPythonOutput((event, data) => {
 
 window.electronAPI.onTorDone(() => {
   clearInterval(hoppingInterval);
-  document.getElementById('status').innerText = "Tor Done";
 });
 
 function startHopping() {

@@ -7,6 +7,7 @@ const path = require('path');
 // ----------------------
 let torPID;
 let pyProcess;
+let serverProcess;
 
 // ----------------------
 // Electron Window
@@ -32,44 +33,67 @@ function createWindow() {
 // Tor Startup
 // ----------------------
 function startTor(win) {
-  if (!win) return console.error('Window is undefined!');
-  
-  const daemonPath = path.join(__dirname, '..','python', 'tor', 'tor_daemon.py');
-  pyProcess = spawn('python3', [daemonPath]);
-  
-  pyProcess.stdout.on('data', (data) => {
-    const lines = data.toString().split('\n');
+  return new Promise((resolve, reject) => {
+    if (!win) return reject(new Error('Window is undefined!'));
 
-    for (let line of lines) {
-      line = line.trim();
-      if (!line) continue;
+    const daemonPath = path.join(__dirname, '..','python', 'tor', 'tor_daemon.py');
+    pyProcess = spawn('python3', [daemonPath]);
 
-      if (line.startsWith("__TOR_PID__:")) {
-        torPID = parseInt(line.split(":")[1], 10);
-        continue;
+    pyProcess.stdout.on('data', (data) => {
+      const lines = data.toString().split('\n');
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        if (line.startsWith("__TOR_PID__:")) {
+          torPID = parseInt(line.split(":")[1], 10);
+          continue;
+        }
+
+        if (line.includes("Bootstrapped 100%")) {
+          win.webContents.send('tor-done');
+          resolve(); 
+        }
+
+        win.webContents.send('python-output', line);
       }
+    });
 
-      if (line.includes("Bootstrapped 100%")) {
-        win.webContents.send('tor-done');
-      }
+    pyProcess.stderr.on('data', (data) => console.error(data.toString()));
+    pyProcess.on('exit', (code) => {
+      reject(new Error(`Tor process exited with code ${code}`));
+    });
+  });
+}
+// ----------------------
+// Server Startup
+// ----------------------
+function startServer(win) {
+  const serverPath = path.join(__dirname, '..', 'python', 'server.py');
+  serverProcess = spawn('python3', [serverPath]);
 
-      win.webContents.send('python-output', line);
-    }
+  serverProcess.stdout.on('data', (data) => {
+    const output = data.toString().trim();
+    console.log('[Server]', output);
+    win.webContents.send('server-output', output);
   });
 
-  pyProcess.stderr.on('data', (data) => console.error(data.toString()));  
+  serverProcess.stderr.on('data', (data) => {
+    console.error('[Server Error]', data.toString());
+  });
+
+  win.webContents.send('server-started');
 }
-
-
-
-
 
 app.on('before-quit', () => {
   if (torPID) process.kill(torPID);
   if (pyProcess) pyProcess.kill();
+  if (serverProcess) serverProcess.kill();
 });
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   const win = createWindow();
-  startTor(win);
+  await startTor(win);
+  startServer(win);
 });
