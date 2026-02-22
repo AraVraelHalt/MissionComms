@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Communications</title>
+    <link rel="stylesheet" href="main_frame.css">
+    <link rel="stylesheet" href="logo/logo_animation.css">
+  </head>
+  
+  <body>
+
+    <!-- LOGO START -->
+    <svg id="logo" width="256" height="256" viewBox="0 0 128 128">
+      <filter id="displacementFilter">
+        <feTurbulence type="turbulence" numOctaves="2" baseFrequency="0" result="turbulence"/>
+        <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="1" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <polygon fill="currentColor"/>
+    
+      <g transform="translate(64,64) scale(1.5)">
+          <rect id="padlock" class="padlock" x="-16" y="-15" width="32" height="30"/>
+          <path id="shackle" class="shackle" d="M-8,-15 C-8,-25 8,-25 8,-15"/>
+      </g>    
+    </svg>
+    <!-- LOGO END -->
+
+    <!-- MAIN SECTION START -->
+    <div id="main-section" style="display:none;">
+        <h1>COMMUNICATIONS COMING SOON...</h1>
+    </div>
+    <!-- MAIN SECTION END -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="logo/logo_animation.js"></script>
+</body>
+</html>

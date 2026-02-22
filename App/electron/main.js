@@ -100,5 +100,5 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
-  win.loadFile('electron/comms/comms.html');
+  win.loadFile('electron/main_frame/main_frame.html');
 });

@@ -1,0 +1,21 @@
+svg {
+    position: fixed;
+}
+
+polygon {
+    filter: url(#displacementFilter);
+}
+
+.padlock {
+    rx: 6;
+    ry: 6;
+    fill: gold;
+    opacity: 0;
+}
+
+.shackle {
+    stroke-width: 4;
+    stroke: gold;
+    fill: none;
+    opacity: 0;
+}
