@@ -1,22 +1,56 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const logo = document.getElementById('logo');
+const turbulence = document.querySelector('feTurbulence');
+const displacement = document.querySelector('feDisplacementMap');
+const polygon = document.querySelector('polygon');
+const duration = 1800;
 
-    logo.classList.add('fade-in');
+// Starting Conditions
+polygon.style.opacity = 0;
 
-    logo.addEventListener('animationend', function handleAnimationEnd(e) {
-        if (e.animationName === 'fadeIn') {
-            logo.classList.remove('fade-in');
-            logo.classList.add('glitch');
-        } 
-        else if (e.animationName === 'glitch') {
-            logo.classList.remove('glitch');
-            logo.classList.add('shrink-move');
-        } 
-        else if (e.animationName === 'shrinkAndMove') {
-            logo.classList.remove('shrink-move');
-            logo.classList.add('final-position');
-            // Remove the event listener after final animation
-            logo.removeEventListener('animationend', handleAnimationEnd);
-        }
-    });
+// Animation
+anime({
+    targets: polygon,
+    opacity: [0, 0.7],
+    duration: 4000,     
+    easing: 'easeOutQuad'
+});
+
+anime({
+    targets: turbulence,
+    baseFrequency: [0, 0.05],
+    direction: 'alternate',
+    loop: 6,
+    duration: duration,
+    easing: 'easeInOutSine'
+});
+
+anime({
+    targets: displacement,
+    scale: [1, 15],
+    direction: 'alternate',
+    loop: 6,
+    duration: duration,
+    easing: 'easeInOutSine'
+});
+
+anime({
+    targets: polygon,
+    points: [
+        '64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96',
+        '64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100'
+    ],
+    direction: 'alternate',
+    loop: 6,
+    duration: duration,
+    easing: 'easeInOutSine'
+});
+
+anime({
+    targets: 'body',
+    color: [
+        { value: '#ff0000' }, // red
+        { value: '#0000ff' }, // blue
+        { value: '#00ff00' }  // green
+    ],
+    duration: 10800,
+    easing: 'linear'
 });
