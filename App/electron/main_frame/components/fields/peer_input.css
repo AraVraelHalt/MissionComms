@@ -1,17 +1,17 @@
 #peerInput {
   display: block;
-  margin: 0 auto;
   padding: 12px 20px;
   border-radius: 50px;
   border: 2px solid #0f0;
   background-color: #111;
   font-size: 16px;
-  font-family: 'Courier New', Courier, monospace; /* hacker-style monospace */
+  font-family: 'Courier New', Courier, monospace;
   color: #0f0;      
   outline: none;
   width: 250px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 8px #0f0;  
+  box-shadow: 0 0 8px #0f0; 
+  animation: fadeIn 3s ease forwards; 
 }
 
 #peerInput:focus {
@@ -28,4 +28,9 @@
 
 #peerInput:focus::placeholder {
   opacity: 0.5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
