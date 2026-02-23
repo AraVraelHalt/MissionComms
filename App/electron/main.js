@@ -1,6 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const { spawn, exec } = require('child_process');
 const path = require('path');
+const net = require('net');
 
 // ----------------------
 // Background Processes
@@ -88,6 +89,43 @@ function startServer(win) {
 }
 
 // ----------------------
+// Event Listeners 
+// ----------------------
+function registerInitConnListener() {
+  ipcMain.on('send-to-server', (event, userInput) => {
+    const client = net.createConnection({ host: '127.0.0.1', port: 6000 }, () => {
+      client.write(`JSCLIENTv1|${userInput}`);
+    });
+
+    let finished = false;
+
+    const cleanup = () => {
+      if (!finished) {
+        finished = true;
+        client.destroy();
+      }
+    };
+
+    client.on('data', (data) => {
+      if (!finished) {
+        event.sender.send('server-response', data.toString());
+        cleanup();
+      }
+    });
+
+    client.on('error', (err) => {
+      if (!finished) {
+        event.sender.send('server-response', `Error: ${err.message}`);
+        cleanup();
+      }
+    });
+
+    client.on('end', cleanup);
+    client.on('close', cleanup);
+  });
+}
+
+// ----------------------
 // Application
 // ----------------------
 app.on('before-quit', () => {
@@ -100,5 +138,6 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
+  registerInitConnListener();
   win.loadFile('electron/main_frame/main_frame.html');
 });
