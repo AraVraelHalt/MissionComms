@@ -6,7 +6,7 @@
 }
 
 #peerInputSubmit {
-  background-color: #121212;
+  background: transparent;
   border: none;
   color: #0f0;
   cursor: pointer;
