@@ -10,17 +10,32 @@ server.listen()
 print(f"Listening on {HOST}:{PORT}")
 
 while True:
-    conn, addr = server.accept()
-    print("Connected by", addr)
+  conn, addr = server.accept()
     
-    try:
-        data = conn.recv(1024)
-        if not data:
-            continue
+  try:
+    while True: 
+      data = conn.recv(1024)
+      if not data:
+        print("Client disconnected", addr)
+        break 
     
-        print("Received:", data.decode())
-        conn.sendall(b"Message received")
-    
-    finally:
-        conn.close()
+      message = data.decode().strip()
 
+      # IPC Check
+      if message.startswith("JSCLIENTv1|"):
+        user_input = message.split("|", 1)[1]
+        print("JS Client input:", user_input)
+
+        if user_input.endswith(".onion"):
+          conn.sendall(b"Valid onion address")
+        else:
+          conn.sendall(b"Invalid address")
+      
+      else:
+        conn.sendall(b"Received your message")
+
+  except Exception as e:
+    print("Error:", e)
+
+  finally:
+    conn.close()
