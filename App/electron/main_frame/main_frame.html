@@ -3,10 +3,18 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' https://cdnjs.cloudflare.com;
+        style-src 'self' 'unsafe-inline';
+        connect-src 'self' http://127.0.0.1:9050 https://*.onion/;
+      ">
     <title>Mission Communications</title>
     <link rel="stylesheet" href="main_frame.css">
     <link rel="stylesheet" href="logo/logo_animation.css">
-    <link rel="stylesheet" href="fields/peer_input.css">
+    <link rel="stylesheet" href="components/fields/peer_input.css">
+    <link rel="stylesheet" href="components/buttons/peer_submit.css">
   </head>
   
   <body>
@@ -28,13 +36,17 @@
 
     <!-- MAIN SECTION START -->
     <div id="main-section" style="display:none;">
-        <h1>COMMUNICATIONS COMING SOON...</h1>
 
-        <input type="text" id="peerInput" placeholder="Enter client address...">
+      <div id="peer-wrapper">
+        <input id="peerInput" type="text" placeholder="Enter client address...">
+        <button id="peerInputSubmit" title="Submit">&#10095;</button>
+      </div>  
+      
     </div>
     <!-- MAIN SECTION END -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="logo/logo_animation.js"></script>
-</body>
+    <script src="components/buttons/peer_submit.js"></script>
+  </body>
 </html>
