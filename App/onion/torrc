@@ -1,2 +1,4 @@
 HiddenServiceDir ./hidden_service/
 HiddenServicePort 80 127.0.0.1:6000
+ControlPort 9051
+HashedControlPassword 16:07EF16B964988C6E60DA2EC16D30D82930A8D94A119010B003614B8CE5

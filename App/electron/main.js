@@ -3,6 +3,8 @@ const { spawn, exec } = require('child_process');
 const path = require('path');
 const net = require('net');
 
+const { registerSecureNodeHandler } = require('./comms/handlers/secureNodeHandler');
+
 // ----------------------
 // Background Processes
 // ----------------------
@@ -138,6 +140,8 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
-  registerInitConnListener();
-  win.loadFile('electron/main_frame/main_frame.html');
+  //registerInitConnListener();
+  //win.loadFile('electron/mainframe/mainframe.html');
+  win.loadFile('electron/comms/terminal.html');
+  registerSecureNodeHandler();
 });

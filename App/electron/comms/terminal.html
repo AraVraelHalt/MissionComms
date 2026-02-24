@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISSION-COMMUNICATIONS</title>
+    <link rel="stylesheet" href="terminal.css">
+  </head>
+
+  <body>
+    <div class="terminal">
+
+      <!-- STATUS -->
+      <div class="row">
+        <span>ANON-ROOM v3.7.1</span>
+        <span id="secure-node">Loading Secure Node...</span>
+        <span>AES-256</span>
+      </div>
+
+      <div class="row">
+        <span>Session: ACTIVE</span>
+        <span>Latency: 42ms</span>
+        <span>Users: 8</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- CONN INFO -->
+      <div class="conn-info">
+        <p>&gt; Connected to channel: #shadow-lobby</p>
+        <p>&gt; Identity: GHOST_9F3A (anonymous)</p>
+        <p>&gt; IP Masked | Location Obfuscated | Trace Protection: ON</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- MESSAGE AREA -->
+      <div class="messages">
+        <!-- Messages appear here -->
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- FOOTER -->
+      <div class="input-area">
+        &gt; _ Type message...
+      </div>
+
+      <div class="controls">
+        <span>[ENTER] Send</span>
+        <span>[CTRL+L] Clear</span>
+        <span>[CTRL+K] Destroy Session</span>
+      </div>
+
+    </div>
+    
+    <script src="terminal.js"></script>
+  </body>
+</html>

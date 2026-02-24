@@ -16,6 +16,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     ipcRenderer.on(channel, listener);
     ipcRenderer.send('send-to-server', userInput);
+  },
+  
+  // TOR INFO
+  getSecureNode: async () => {
+    return await ipcRenderer.invoke('get-secure-node');
   }
 });
 

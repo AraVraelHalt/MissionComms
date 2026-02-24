@@ -1,3 +1,4 @@
+from tor.tor_utils import get_secure_node
 import socket
 
 HOST = "127.0.0.1"
@@ -24,9 +25,11 @@ while True:
       # IPC Check
       if message.startswith("JSCLIENTv1|"):
         user_input = message.split("|", 1)[1]
-        print("JS Client input:", user_input)
 
-        if user_input.endswith(".onion"):
+        if user_input == "getSecureNode":
+          response = get_secure_node()
+          conn.sendall(response.encode())
+        elif user_input.endswith(".onion"):
           conn.sendall(b"Valid onion address")
         else:
           conn.sendall(b"Invalid address")

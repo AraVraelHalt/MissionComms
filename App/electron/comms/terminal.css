@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+}
+
+/* TERMINAL */
+.terminal {
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP ROWS */
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  text-shadow: 0 0 6px #00ff00;
+}
+
+.divider {
+  border-top: 1px solid #00ff00;
+  margin: 12px 0;
+}
+
+/* CONN INFO */
+.conn-info p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* MESSAGE AREA */
+.messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+/* FOOTER */
+.input-area {
+  padding: 8px 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.6;
+}
