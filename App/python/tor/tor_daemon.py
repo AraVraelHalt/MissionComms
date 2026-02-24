@@ -1,14 +1,14 @@
 import subprocess
 import os
 
-def start_tor():
-    tor_exec = "tor"
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    onion_dir = os.path.abspath(os.path.join(script_dir, "../../onion"))
+TOR_EXEC = "tor"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ONION_DIR = os.path.abspath(os.path.join(BASE_DIR, "../../onion"))
 
+def start_tor():
     process = subprocess.Popen(
-        [tor_exec, "-f", "torrc"],
-        cwd=onion_dir,
+        [TOR_EXEC, "-f", "torrc"],
+        cwd=ONION_DIR,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
