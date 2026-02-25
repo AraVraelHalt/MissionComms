@@ -1,4 +1,5 @@
 const sn = document.getElementById('secure-node');
+const un = document.getElementById('username');
 
 document.addEventListener('DOMContentLoaded', async () => {
 

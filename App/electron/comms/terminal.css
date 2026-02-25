@@ -51,9 +51,27 @@ html, body {
 
 /* FOOTER */
 .input-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 0;
   font-size: 14px;
   opacity: 0.85;
+}
+
+.input-area input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.input-area input::placeholder {
+  color: #00ff00;
+  opacity: 0.5;
 }
 
 .controls {

@@ -20,7 +20,7 @@
       <div class="row">
         <span>Session: ACTIVE</span>
         <span>Latency: 42ms</span>
-        <span>Users: 8</span>
+        <span>Network: Live</span>
       </div>
 
       <div class="divider"></div>
@@ -28,7 +28,7 @@
       <!-- CONN INFO -->
       <div class="conn-info">
         <p>&gt; Connected to channel: #shadow-lobby</p>
-        <p>&gt; Identity: GHOST_9F3A (anonymous)</p>
+        <p id="username">&gt; Identity: GHOST_9F3A (anonymous)</p>
         <p>&gt; IP Masked | Location Obfuscated | Trace Protection: ON</p>
       </div>
 
@@ -43,7 +43,8 @@
 
       <!-- FOOTER -->
       <div class="input-area">
-        &gt; _ Type message...
+        <span>&gt;</span>
+        <input type="text" id="messageInput" placeholder="Type message..." autocomplete="off" />
       </div>
 
       <div class="controls">
