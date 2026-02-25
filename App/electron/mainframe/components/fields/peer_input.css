@@ -26,8 +26,34 @@
   transition: opacity 0.3s ease;
 }
 
+#peerInput.error {
+  border-color: #ff0000;
+  box-shadow: 0 0 8px #ff0000, 0 0 16px #ff0000;
+}
+
+#peerInput.error::placeholder {
+  color: #ff0000;
+  opacity: 0.7;
+}
+
 #peerInput:focus::placeholder {
   opacity: 0.5;
+}
+
+#error-msg {
+  display: none;
+  top: 100%;
+  left: 25%;
+  margin-top: 12px; 
+  color: #ff0000;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  position: absolute;
+  white-space: nowrap;
+}
+
+#field-container {
+  position: relative;
 }
 
 @keyframes fadeIn {

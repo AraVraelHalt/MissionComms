@@ -11,7 +11,7 @@ function requestSecureNode() {
     const client = new net.Socket();
 
     client.connect(6000, '127.0.0.1', () => {
-      client.write("JSCLIENTv1|getSecureNode");
+      client.write("JSCLIENTv2|getSecureNode");
     });
 
     client.on('data', (data) => {

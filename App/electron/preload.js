@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onServerStarted: (callback) => ipcRenderer.on('server-started', callback), 
   startHopping: () => ipcRenderer.send('start-hopping'),
 
-  sendToServer: (userInput, callback) => {
+  connToPeer: (userInput, callback) => {
     const channel = 'server-response';
     const listener = (event, response) => {
       callback(response);
@@ -15,7 +15,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     };
 
     ipcRenderer.on(channel, listener);
-    ipcRenderer.send('send-to-server', userInput);
+    ipcRenderer.send('conn-to-peer', userInput);
   },
   
   // TOR INFO

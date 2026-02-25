@@ -94,7 +94,7 @@ function startServer(win) {
 // Event Listeners 
 // ----------------------
 function registerInitConnListener() {
-  ipcMain.on('send-to-server', (event, userInput) => {
+  ipcMain.on('conn-to-peer', (event, userInput) => {
     const client = net.createConnection({ host: '127.0.0.1', port: 6000 }, () => {
       client.write(`JSCLIENTv1|${userInput}`);
     });
@@ -140,8 +140,8 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
-  //registerInitConnListener();
-  //win.loadFile('electron/mainframe/mainframe.html');
-  win.loadFile('electron/comms/terminal.html');
-  registerSecureNodeHandler();
+  registerInitConnListener();
+  win.loadFile('electron/mainframe/mainframe.html');
+  //win.loadFile('electron/comms/terminal.html');
+  //registerSecureNodeHandler();
 });
