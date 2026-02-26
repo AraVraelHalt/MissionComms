@@ -75,7 +75,7 @@ function startTor(win) {
 // ----------------------
 function startServer(win) {
   const serverPath = path.join(__dirname, '..', 'python', 'server.py');
-  serverProcess = spawn('python3', [serverPath]);
+  serverProcess = spawn('python3', ['-u', serverPath]);
 
   serverProcess.stdout.on('data', (data) => {
     const output = data.toString().trim();
@@ -93,37 +93,46 @@ function startServer(win) {
 // ----------------------
 // Event Listeners 
 // ----------------------
-function registerInitConnListener() {
-  ipcMain.on('conn-to-peer', (event, userInput) => {
-    const client = net.createConnection({ host: '127.0.0.1', port: 6000 }, () => {
-      client.write(`JSCLIENTv1|${userInput}`);
-    });
+function registerInitConnListener(win) {
+  ipcMain.handle('conn-to-peer', async (event, userInput) => {
 
-    let finished = false;
+    return new Promise((resolve) => {
+      const client = net.createConnection({ host: '127.0.0.1', port: 6000 }, () => {
+        client.write(`JSCLIENTv1|${userInput}`);
+      });
 
-    const cleanup = () => {
-      if (!finished) {
-        finished = true;
-        client.destroy();
-      }
-    };
+      let finished = false;
 
-    client.on('data', (data) => {
-      if (!finished) {
-        event.sender.send('server-response', data.toString());
+      const cleanup = () => {
+        if (!finished) {
+          finished = true;
+          client.destroy();
+        }
+      };
+
+      client.on('data', (data) => {
+        if (finished) return;
+
+        const response = data.toString().trim();
         cleanup();
-      }
-    });
 
-    client.on('error', (err) => {
-      if (!finished) {
-        event.sender.send('server-response', `Error: ${err.message}`);
-        cleanup();
-      }
-    });
+        if (response === 'VALID') {
+          win.loadFile('electron/loading/loading.html');
+          resolve('OK');
+        }
+        else {
+          resolve('INVALID');
+        }
+      });
 
-    client.on('end', cleanup);
-    client.on('close', cleanup);
+      client.on('error', (err) => {
+          cleanup();
+          resolve('INVALID');
+      });
+
+      client.on('end', cleanup);
+      client.on('close', cleanup);
+    });
   });
 }
 
@@ -140,7 +149,8 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
-  registerInitConnListener();
+  //win.loadFile('electron/loading/loading.html');
+  registerInitConnListener(win);
   win.loadFile('electron/mainframe/mainframe.html');
   //win.loadFile('electron/comms/terminal.html');
   //registerSecureNodeHandler();

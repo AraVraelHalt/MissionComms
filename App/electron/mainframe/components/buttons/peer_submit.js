@@ -12,17 +12,22 @@ inputField.addEventListener('keydown', function(e) {
 });
 
 // SUBMIT
-function handleSubmit() {
+async function handleSubmit() {
   const value = inputField.value.trim();
   if (!value) return;
-  
-  errorVisual(false); 
-  
-  window.electronAPI.connToPeer(value, (response) => {
-    if (response === 'INVALID') {
+
+  errorVisual(false);
+
+  try {
+    const result = await window.electronAPI.connToPeer(value);
+
+    if (result === 'INVALID') {
       errorVisual(true);
     }
-  });
+
+  } catch (err) {
+    console.error(err);
+  }
 
   inputField.value = '';
 }

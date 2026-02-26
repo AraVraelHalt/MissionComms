@@ -7,17 +7,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onServerStarted: (callback) => ipcRenderer.on('server-started', callback), 
   startHopping: () => ipcRenderer.send('start-hopping'),
 
-  connToPeer: (userInput, callback) => {
-    const channel = 'server-response';
-    const listener = (event, response) => {
-      callback(response);
-      ipcRenderer.removeListener(channel, listener); // clean up
-    };
-
-    ipcRenderer.on(channel, listener);
-    ipcRenderer.send('conn-to-peer', userInput);
-  },
-  
+  connToPeer: (value) => ipcRenderer.invoke('conn-to-peer', value),
+ 
   // TOR INFO
   getSecureNode: async () => {
     return await ipcRenderer.invoke('get-secure-node');
