@@ -14,6 +14,7 @@ server_running = True
 peer_connection = None
 peer_lock = threading.Lock()
 peer_connecting = False
+peer_cancel_requested = False
 
 # ----------------------------
 # Helper Functions
@@ -28,17 +29,24 @@ def send_response(conn: socket.socket, response: str):
 # Peer Connection Logic (Tor)
 # ----------------------------
 def connect_to_peer(onion_address: str, port: int, retry_delay=5):
-    global peer_connection, peer_connecting
+    global peer_connection, peer_connecting, peer_cancel_requested
 
     with peer_lock:
         if peer_connecting or peer_connection:
             print("Peer connection already active or connecting")
             return
         peer_connecting = True
+        peer_cancel_requested = False
 
     print(f"[TOR] Starting connection to {onion_address}:{port}")
 
     while True:
+        with peer_lock:
+            if peer_cancel_requested:
+                print("[TOR] Connection attempt cancelled")
+                peer_connecting = False
+                return
+
         try:
             sock = socks.socksocket()
             sock.set_proxy(socks.SOCKS5, "127.0.0.1", 9050)
@@ -104,6 +112,21 @@ def process_message(message: str) -> str:
 
         if request == "getSecureNode":
             return get_secure_node()
+        elif request == "cancelPeerConn":
+            global peer_cancel_requested, peer_connection, peer_connecting
+            
+            with peer_lock:
+                peer_cancel_requested = True
+                peer_connecting = False
+            
+                if peer_connection:
+                    try:
+                        peer_connection.close()
+                    except:
+                        pass
+                    peer_connection = None
+
+            return "CONN CANCELLED"
 
         return "Unknown request"
 

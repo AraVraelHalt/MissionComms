@@ -8,7 +8,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   startHopping: () => ipcRenderer.send('start-hopping'),
 
   connToPeer: (value) => ipcRenderer.invoke('conn-to-peer', value),
- 
+
+  cancelPeerConn: () => ipcRenderer.invoke('cancel-peer-conn'), 
+
   // TOR INFO
   getSecureNode: async () => {
     return await ipcRenderer.invoke('get-secure-node');

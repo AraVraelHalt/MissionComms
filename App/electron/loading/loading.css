@@ -68,7 +68,7 @@ body {
 }
 
 /* CANCEL BUTTON */
-#cancelButton {
+#cancel-btn {
   position: absolute;
   bottom: 5%;
   left: 5%;
@@ -87,19 +87,19 @@ body {
   animation: buttonFadeIn 2s ease forwards;
 }
 
-#cancelButton:hover {
+#cancel-btn:hover {
   background-color: #000;
   box-shadow: 0 0 12px #0f0, 0 0 24px #0f0;
 }
 
-#cancelButton:active {
+#cancel-btn:active {
   background-color: #0f0;
   color: #000;
   box-shadow: 0 0 6px #0f0, 0 0 12px #0f0 inset;
 }
 
-#cancelButton.disabled,
-#cancelButton:disabled {
+#cancel-btn.disabled,
+#cancel-btn:disabled {
   border-color: #444;
   color: #444;
   box-shadow: none;

@@ -4,6 +4,7 @@ const path = require('path');
 const net = require('net');
 
 const { registerSecureNodeHandler } = require('./comms/handlers/secureNodeHandler');
+const { registerCancelConnHandler } = require('./comms/handlers/cancelConnHandler');
 const { registerInitConnListener } = require('./comms/listeners/initConnListener');
 
 // ----------------------
@@ -107,6 +108,7 @@ app.whenReady().then(async () => {
   //win.loadFile('electron/loading/loading.html');
   registerInitConnListener(win);
   win.loadFile('electron/mainframe/mainframe.html');
+  registerCancelConnHandler(win);
   //win.loadFile('electron/comms/terminal.html');
   //registerSecureNodeHandler();
 });

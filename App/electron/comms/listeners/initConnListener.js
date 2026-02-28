@@ -47,4 +47,7 @@ function registerInitConnListener(win) {
   });
 }
 
-module.exports = { registerInitConnListener };
+module.exports = { 
+  registerInitConnListener 
+};
+

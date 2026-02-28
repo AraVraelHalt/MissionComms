@@ -4,13 +4,14 @@ const net = require('net');
 /**
 * Requests secure node info from server
 *
-* @returns promise for { nickname, country }
+* @param {PORT}
+* @param {HOST}
 */
-function requestSecureNode() {
+function requestSecureNode(PORT=6000, HOST="127.0.0.1") {
   return new Promise((resolve, reject) => {
     const client = new net.Socket();
 
-    client.connect(6000, '127.0.0.1', () => {
+    client.connect(PORT, HOST, () => {
       client.write("JSCLIENTv2|getSecureNode");
     });
 
