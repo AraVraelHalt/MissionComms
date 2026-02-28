@@ -80,9 +80,21 @@ function startServer(win) {
   serverProcess = spawn('python3', ['-u', serverPath]);
 
   serverProcess.stdout.on('data', (data) => {
-    const output = data.toString().trim();
-    console.log('[Server]', output);
-    win.webContents.send('server-output', output);
+    const lines = data.toString().split('\n');
+    
+    for (let line of lines) {
+      line = line.trim();
+      if (!line) continue;
+      
+      console.log(line);
+      
+      if (line === "EVENT:CONNECTED") {
+        win.loadFile('electron/comms/terminal.html');
+        continue;
+      }
+      
+      win.webContents.send('server-output', line);
+    }
   });
 
   serverProcess.stderr.on('data', (data) => {
@@ -105,10 +117,9 @@ app.whenReady().then(async () => {
   const win = createWindow();
   await startTor(win);
   startServer(win);
-  //win.loadFile('electron/loading/loading.html');
   registerInitConnListener(win);
   win.loadFile('electron/mainframe/mainframe.html');
   registerCancelConnHandler(win);
   //win.loadFile('electron/comms/terminal.html');
-  //registerSecureNodeHandler();
+  registerSecureNodeHandler();
 });

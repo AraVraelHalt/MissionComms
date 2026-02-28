@@ -53,11 +53,12 @@ def connect_to_peer(onion_address: str, port: int, retry_delay=5):
 
             sock.connect((onion_address, port))
 
-            print(f"[TOR] Successfully connected to {onion_address}:{port}")
+            print(f"[TOR] Successfully connected...")
 
             with peer_lock:
                 peer_connection = sock
                 peer_connecting = False
+                print("EVENT:CONNECTED", flush=True)
 
             handle_peer(sock)
             break
